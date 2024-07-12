@@ -1,0 +1,39 @@
+{
+  "name": "node-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsnd --respawn --clear src/app.ts",
+    "build": "rimraf ./dist && tsc",
+    "start": "npm run build && node dist/app.js",
+    "test": "jest --config=jest.config.ts --verbose --forceExit --runInBand",
+    "test:watch": "jest --config=jest.config.ts --verbose --forceExit --runInBand --watch",
+    "test:coverage": "jest --config=jest.config.ts --verbose --forceExit --runInBand --coverage",
+    "test:e2e": "jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand",
+    "test:watch:e2e": "jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand --watch",
+    "test:coverage:e2e": "jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.10",
+    "jest": "^29.7.0",
+    "rimraf": "^6.0.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.16.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "env-var": "^7.5.0",
+    "express": "^4.19.2"
+  }
+}
