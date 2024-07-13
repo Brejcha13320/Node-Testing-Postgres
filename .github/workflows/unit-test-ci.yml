@@ -1,0 +1,31 @@
+name: Unit Testing with CI
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.9.0
+
+      - name: Install Dependencies for CI
+        run: npm ci
+
+      - name: Run Unit Test
+        run: npm run test
+        env:
+          PORT: 3001
+          NODE_ENV: "ci"
+          PUBLIC_PATH: "public"
+          JWT_SEED: "3D7mQJx8cAtdG7VZnrS25Wp2C4vqKyYJ"
+          POSTGRES_URL: "postgresql://e2e:e2e123@localhost:5432/my_store_e2e"
