@@ -32,7 +32,6 @@ export class Server {
   }
 
   static startServer(server: Express, port: number) {
-    console.log(server, port);
     return server.listen(port, () => {
       console.log(`Server Running on Port ${port}`);
     });
