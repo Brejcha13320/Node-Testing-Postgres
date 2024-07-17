@@ -12,7 +12,7 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
 
-  postgres_e2e:
+  postgres-e2e:
     image: postgres:15.3
     environment:
       - POSTGRES_DB=my_store_e2e

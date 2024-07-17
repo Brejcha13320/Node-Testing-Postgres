@@ -4,7 +4,7 @@ import { Server } from "../src/server";
 jest.mock("../src/server");
 
 describe("test app.ts", () => {
-  test("should createServer and startServer with arguments", async () => {
+  test("should createServer and startServer", async () => {
     const port = envs.PORT;
     const routes = expect.any(Function);
     await import("../src/app");

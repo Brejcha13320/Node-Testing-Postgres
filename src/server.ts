@@ -1,4 +1,4 @@
-import express, { Router, Express } from "express";
+import express, { Express } from "express";
 import path from "path";
 import cors from "cors";
 import { envs } from "./config";
