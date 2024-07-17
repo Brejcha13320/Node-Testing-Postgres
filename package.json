@@ -7,12 +7,14 @@
     "dev": "tsnd --respawn --clear src/app.ts",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/app.js",
+    "prisma:migrate:e2e": "dotenv -e .env.test -- npx prisma db push",
     "test": "jest --config=jest.config.ts --verbose --forceExit --runInBand",
     "test:watch": "jest --config=jest.config.ts --verbose --forceExit --runInBand --watch",
     "test:coverage": "jest --config=jest.config.ts --verbose --forceExit --runInBand --coverage",
-    "test:e2e": "jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand",
-    "test:watch:e2e": "jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand --watch",
-    "test:coverage:e2e": "jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand --coverage"
+    "test:e2e:ci": "npx prisma db push && jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand",
+    "test:e2e": "npm run prisma:migrate:e2e && jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand",
+    "test:watch:e2e": "npm run prisma:migrate:e2e && jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand --watch",
+    "test:coverage:e2e": "npm run prisma:migrate:e2e && jest --config=jest-e2e.config.ts --verbose --forceExit --runInBand --coverage"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +26,9 @@
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.10",
+    "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
+    "dotenv-cli": "^7.4.2",
     "jest": "^29.7.0",
     "rimraf": "^6.0.1",
     "supertest": "^7.0.0",
@@ -33,6 +37,7 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
+    "@hapi/boom": "^10.0.1",
     "@prisma/client": "^5.16.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

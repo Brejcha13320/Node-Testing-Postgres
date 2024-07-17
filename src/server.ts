@@ -1,15 +1,13 @@
 import express, { Router, Express } from "express";
 import path from "path";
 import cors from "cors";
-
-interface Options {
-  publicPath: string;
-  routes: Router;
-}
+import { envs } from "./config";
+import { AppRoutes } from "./routes/routes";
 
 export class Server {
-  static createServer({ publicPath, routes }: Options): Express {
+  static createServer(): Express {
     const app = express();
+    const publicPath = envs.PUBLIC_PATH;
     //* Middlewares
     app.use(cors());
     app.use(express.json());
@@ -18,7 +16,7 @@ export class Server {
     app.use(express.static(publicPath));
 
     //* Routes
-    app.use(routes);
+    AppRoutes.routes(app);
 
     //* SPA
     app.get("*", (req, res) => {

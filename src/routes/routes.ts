@@ -1,15 +1,15 @@
-import { Router } from "express";
+import { Router, Express } from "express";
 
 import { ProductsRoutes } from "./products.routes";
+import { AuthRoutes } from "./auth.routes";
 
 export class AppRoutes {
-  private static readonly basePath = "/api";
-  static get routes(): Router {
+  static routes(app: Express) {
     const router = Router();
+    app.use("/api", router);
 
     //Define Routes
-    router.use(`${this.basePath}/products`, ProductsRoutes.routes);
-
-    return router;
+    router.use("/products", ProductsRoutes.routes);
+    router.use("/auth", AuthRoutes.routes);
   }
 }

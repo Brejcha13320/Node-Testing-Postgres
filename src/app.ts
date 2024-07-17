@@ -8,10 +8,7 @@ import { AppRoutes } from "./routes/routes";
 
 function main() {
   const port = envs.PORT;
-  const server = Server.createServer({
-    publicPath: envs.PUBLIC_PATH,
-    routes: AppRoutes.routes,
-  });
+  const server = Server.createServer();
 
   Server.startServer(server, port);
 }
