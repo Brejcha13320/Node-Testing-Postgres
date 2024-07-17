@@ -9,6 +9,8 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
+    container:
+      image: node:20.9.0
     services:
       postgres-e2e:
         image: postgres:15.3
@@ -22,15 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.9.0
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20.9.0
 
       - name: Install Dependencies for CI
         run: npm ci
 
-      - name: Run Unit Test
+      - name: Run E2E Test
         run: npm run test:e2e:ci
         env:
           PORT: 3001
