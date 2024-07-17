@@ -1,6 +1,5 @@
 import { Server } from "./server";
 import { envs } from "./config";
-import { AppRoutes } from "./routes/routes";
 
 (async () => {
   main();

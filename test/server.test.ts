@@ -9,18 +9,11 @@ describe("test server.ts", () => {
   });
 
   test("createServer should return a new express server", () => {
-    const publicPath = envs.PUBLIC_PATH;
-    const routes = Router();
-
     const spyCreateServer = jest.spyOn(Server, "createServer");
-    const server = Server.createServer({ publicPath, routes });
+    const server = Server.createServer();
 
     expect(server instanceof Function).toBeTruthy();
     expect(spyCreateServer).toHaveBeenCalledTimes(1);
-    expect(spyCreateServer).toHaveBeenCalledWith({
-      publicPath,
-      routes: expect.any(Function),
-    });
   });
 
   test("startServer should start server", () => {
