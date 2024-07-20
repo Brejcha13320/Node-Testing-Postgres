@@ -7,7 +7,7 @@ import {
 
 export class HandleError {
   static error(error: unknown, res: Response) {
-    // console.log(`${error}`);
+    console.log(`${error}`);
 
     if (boom.isBoom(error)) {
       return res

@@ -24,6 +24,76 @@ describe("test for /auth path", () => {
     app.close();
   });
 
+  describe("GET /auth/login", () => {
+    beforeAll(async () => {
+      await prisma.user.deleteMany();
+      const inputData = {
+        name: "Jesus",
+        email: "jesus@gmail.com",
+        password: "123456",
+      };
+      await api.post("/api/auth/register").send(inputData);
+    });
+
+    afterAll(async () => {
+      await prisma.user.deleteMany();
+    });
+
+    test("should return 200 with user and token", async () => {
+      const inputData = {
+        email: "jesus@gmail.com",
+        password: "123456",
+      };
+
+      const { statusCode, body } = await api
+        .post("/api/auth/login")
+        .send(inputData);
+
+      expect(statusCode).toBe(200);
+      expect(body).toHaveProperty("user");
+      expect(body).toHaveProperty("access_token");
+      expect(body.access_token).toEqual(expect.any(String));
+    });
+
+    test("should return 400 without email", async () => {
+      const inputData = {
+        name: "jesus",
+        password: "123456",
+      };
+      const { statusCode } = await api.post("/api/auth/login").send(inputData);
+      expect(statusCode).toBe(400);
+    });
+
+    test("should return 400 without password", async () => {
+      const inputData = {
+        name: "jesus",
+        email: "jesus@gmail.com",
+      };
+      const { statusCode } = await api.post("/api/auth/login").send(inputData);
+      expect(statusCode).toBe(400);
+    });
+
+    test("should return 400 for short password", async () => {
+      const inputData = {
+        name: "jesus",
+        email: "jesus@gmail.com",
+        password: "123",
+      };
+      const { statusCode } = await api.post("/api/auth/login").send(inputData);
+      expect(statusCode).toBe(400);
+    });
+
+    test("should return 400 for email not valid", async () => {
+      const inputData = {
+        name: "jesus",
+        email: "jesus@gmail",
+        password: "123",
+      };
+      const { statusCode } = await api.post("/api/auth/login").send(inputData);
+      expect(statusCode).toBe(400);
+    });
+  });
+
   describe("GET /auth/register", () => {
     beforeEach(async () => {
       await prisma.user.deleteMany();
@@ -46,6 +116,23 @@ describe("test for /auth path", () => {
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
       });
+    });
+
+    test("should return 201 and encrypt password", async () => {
+      const inputData = {
+        name: "Jesus",
+        email: "jesus@gmail.com",
+        password: "123456",
+      };
+      const spyHash = jest.spyOn(BcryptAdapter, "hash");
+
+      const { statusCode } = await api
+        .post("/api/auth/register")
+        .send(inputData);
+
+      expect(statusCode).toBe(201);
+      expect(spyHash).toHaveBeenCalledTimes(1);
+      expect(spyHash).toHaveBeenCalledWith(inputData.password);
     });
 
     test("should return 400 for email already exists", async () => {
@@ -78,6 +165,7 @@ describe("test for /auth path", () => {
         .send(inputData);
       expect(statusCode).toBe(400);
     });
+
     test("should return 400 without email", async () => {
       const inputData = {
         name: "jesus",
@@ -88,6 +176,7 @@ describe("test for /auth path", () => {
         .send(inputData);
       expect(statusCode).toBe(400);
     });
+
     test("should return 400 without password", async () => {
       const inputData = {
         name: "jesus",
@@ -98,6 +187,7 @@ describe("test for /auth path", () => {
         .send(inputData);
       expect(statusCode).toBe(400);
     });
+
     test("should return 400 for short password", async () => {
       const inputData = {
         name: "jesus",
@@ -109,6 +199,7 @@ describe("test for /auth path", () => {
         .send(inputData);
       expect(statusCode).toBe(400);
     });
+
     test("should return 400 for email not valid", async () => {
       const inputData = {
         name: "jesus",
